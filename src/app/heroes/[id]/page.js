@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { getHeroById } from '@/services/marvelService';
 import { useFavorites } from '@/hooks/useFavorites';
 import Header from '@/components/Header';
@@ -9,11 +9,11 @@ import Link from 'next/link';
 import Accordion from '@/components/Accordion';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
+import Loading from '@/components/Loading';
 
-export default function HeroDetailPage() {
+const HeroDetailContent = () => {
     const { id } = useParams();
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [hero, setHero] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -53,6 +53,7 @@ export default function HeroDetailPage() {
 
     if (loading) {
         return (
+
             <div className="min-h-screen">
                 <Header onSearch={handleSearch} />
                 <div className="container mx-auto p-4 text-center">
@@ -88,7 +89,7 @@ export default function HeroDetailPage() {
                         <div className="md:w-1/3 rounded-lg overflow-hidden h-[300px] md:h-[400px]">
                             <div className='flex justify-between md:hidden'>
                                 <Link
-                                    href={`/heroes?${searchParams.toString()}`}
+                                    href={`/heroes`}
                                     className="flex gap-3 items-center justify-center py-2 cursor-pointer px-3 rounded-full bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400"
                                 >
                                     <FaArrowLeft />
@@ -104,7 +105,7 @@ export default function HeroDetailPage() {
                             </div>
                             <div className='hidden md:block'>
                                 <Link
-                                    href={`/heroes?${searchParams.toString()}`}
+                                    href={`/heroes`}
                                     className="flex gap-3 items-center justify-center py-2 cursor-pointer px-3 rounded-full bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400"
                                 >
                                     <FaArrowLeft />
@@ -149,5 +150,10 @@ export default function HeroDetailPage() {
                 </div>
             </main>
         </div>
-    );
+    )
+}
+
+export default function HeroDetailPage() {
+
+    <Suspense fallback={<Loading />}><HeroDetailContent /></Suspense>
 }
