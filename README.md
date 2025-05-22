@@ -36,7 +36,12 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 git clone https://github.com/roquicelmo/marvel-heroes.git
 ```
 
-2 - Instale as dependências
+2 - Entre na Pasta Criada pelo projeto
+```bash
+cd marvel-heroes/
+```
+
+3 - Instale as dependências
 ```bash
 npm install
 ```
