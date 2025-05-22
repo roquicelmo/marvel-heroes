@@ -5,10 +5,12 @@ import { getHeroes } from '@/services/marvelService';
 import { useFavorites } from '@/hooks/useFavorites';
 import CardHero from '@/components/CardHero';
 import Loading from '@/components/Loading';
+import { WrapperDataComponent } from '@/components/WrapperDataComponent';
 
 export default function FavoritesPage() {
     const [favoriteHeroes, setFavoriteHeroes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false)
     const { favorites } = useFavorites();
 
     useEffect(() => {
@@ -21,7 +23,9 @@ export default function FavoritesPage() {
                     favorites.includes(hero.id)
                 );
                 setFavoriteHeroes(filtered);
+                setError(false)
             } catch (error) {
+                setError(true)
                 console.error('Error fetching favorites:', error);
             } finally {
                 setLoading(false);
@@ -34,18 +38,27 @@ export default function FavoritesPage() {
     return (
 
 
-        <div className={`container mx-auto min-h-full p-4 ${loading ? 'items-center justify-center flex' : ''}`}>
-            {loading ? <Loading /> : <><h1 className="text-2xl font-bold mb-6">Your Favorite Heroes</h1>
 
-                {favoriteHeroes.length === 0 ? (
-                    <p className="text-center text-gray-500">Você não tem heróis nos favoritos</p>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {favoriteHeroes.map(hero => (
-                            <CardHero key={hero.id} hero={hero} />
-                        ))}
-                    </div>
-                )}</>}
+
+        <div className={`container mx-auto min-h-full p-4 ${loading ? 'items-center justify-center flex' : ''}`}>
+
+            <WrapperDataComponent isLoading={loading} hasError={error} tryAgain={() => router.refresh()}>
+                <>
+                    <h1 className="text-2xl font-bold mb-6">Seus Heróis favoritos</h1>
+
+                    {favoriteHeroes.length === 0 ? (
+                        <p className="text-center text-gray-500">Você não tem heróis nos favoritos</p>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {favoriteHeroes.map(hero => (
+                                <CardHero key={hero.id} hero={hero} />
+                            ))}
+                        </div>
+                    )}
+                </>
+            </WrapperDataComponent>
         </div>
+
+
     );
 }
