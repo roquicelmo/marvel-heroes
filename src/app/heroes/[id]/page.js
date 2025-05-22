@@ -4,12 +4,14 @@ import { useState, useEffect, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getHeroById } from '@/services/marvelService';
 import { useFavorites } from '@/hooks/useFavorites';
-import Header from '@/components/Header';
 import Link from 'next/link';
-import Accordion from '@/components/Accordion';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import Loading from '@/components/Loading';
+import { MdMenuBook, MdMovie } from "react-icons/md";
+import CardInfoHero from '@/components/CardInfoHero';
+import { FaNewspaper } from "react-icons/fa6";
+
 
 const HeroDetailContent = () => {
     const { id } = useParams();
@@ -38,75 +40,61 @@ const HeroDetailContent = () => {
         toggleFavorite(hero.id);
     };
 
-    const handleSearch = (searchTerm) => {
-        router.push(`/heroes?nameStartsWith=${searchTerm}&page=1`);
-    };
-
     const getFavoriteLabel = (favorite) => {
         if (favorite) {
-            return <div className="flex items-center justify-center gap-1.5"><FaHeart /><span>Favorito</span></div>
+            return <div className="flex items-center justify-center gap-1.5"><FaHeart /><span className='hidden lg:block'>Favorito</span></div>
         }
         else {
-            return <div className="flex items-center justify-center gap-1.5"><FaRegHeart /><span>Favoritar</span></div>
+            return <div className="flex items-center justify-center gap-1.5"><FaRegHeart /><span className='hidden lg:block'>Favoritar</span></div>
         }
     }
 
-    if (loading) {
-        return (
-
-            <div className="min-h-screen">
-                <Header onSearch={handleSearch} />
-                <div className="container mx-auto p-4 text-center">
-                    <p>Loading hero details...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="min-h-screen">
-                <Header onSearch={handleSearch} />
-                <div className="container mx-auto p-4 text-center text-red-500">
-                    <p>{error}</p>
-                    <Link href="/heroes" className="text-blue-500 mt-4 inline-block">
-                        Back to Heroes List
-                    </Link>
-                </div>
-            </div>
-        );
-    }
 
     return (
-        <div className="min-h-screen">
-            <Header onSearch={handleSearch} />
+        <>
 
-            <main className="container mx-auto p-6 h-full">
+            <div className={`container mx-auto p-6 h-full ${loading ? 'flex items-center justify-center' : ''}`}>
 
 
-                <div className="overflow-hidden">
-                    <div className="flex-col md:flex-row flex gap-3">
-                        <div className="md:w-1/3 rounded-lg overflow-hidden h-[300px] md:h-[400px]">
-                            <div className='flex justify-between md:hidden'>
-                                <Link
-                                    href={`/heroes`}
-                                    className="flex gap-3 items-center justify-center py-2 cursor-pointer px-3 rounded-full bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400"
-                                >
-                                    <FaArrowLeft />
-                                    <span>Voltar</span>
-                                </Link>
+                {loading ? <Loading /> : (<div className="overflow-hidden">
+                    <div className="flex-col-reverse md:flex-row flex gap-3">
+
+                        <div className="p-6 md:w-1/2 rounded-lg">
+                            <div className="flex justify-between items-start mb-6">
+                                <div className='flex gap-5'>
+                                    <Link
+                                        href={`/heroes`}
+                                        className="bg-gray-300 hidden md:flex gap-3 items-center justify-center py-2 cursor-pointer px-3 rounded-full text-gray-500 hover:text-gray-600 hover:bg-gray-300"
+                                    >
+                                        <FaArrowLeft />
+                                    </Link>
+                                    <h1 className="text-3xl font-bold text-red-500">{hero.name}</h1>
+                                </div>
                                 <button
                                     onClick={handleFavorite}
-                                    className={`px-4 py-2 cursor-pointer rounded-full ${isFavorite(hero.id) ? 'bg-cyan-600 text-white border-2 border-transparent' : 'bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400'}`}
+                                    className={`px-4 py-2 cursor-pointer rounded-full ${isFavorite(hero.id) ? 'bg-red-500 text-white' : 'bg-gray-200 hover:text-gray-600 hover:bg-gray-300'}`}
                                 >
                                     {isFavorite(hero.id) ? getFavoriteLabel(true) : getFavoriteLabel(false)}
                                 </button>
-
                             </div>
-                            <div className='hidden md:block'>
+
+                            <div className="mb-8 p-4">
+                                <h2 className="text-xl font-semibold mb-2 ">Description</h2>
+                                <p className="">{hero.description ? hero.description : 'Não há descrições disponíveis para este herói'}</p>
+                            </div>
+
+                            <div className="space-y-4 flex justify-between gap-3 flex-col">
+                                <CardInfoHero label="Quadrinhos em que aparece:" icon={<MdMenuBook className="text-red-500" size={48} />} items={hero.comics.available} />
+                                <CardInfoHero label="Séries em que aparece:" icon={<MdMovie className="text-red-500" size={48} />} items={hero.series.available} />
+                                <CardInfoHero label="Histórias em que aparece:" icon={<FaNewspaper className="text-red-500" size={48} />} items={hero.stories.available} />
+                            </div>
+                        </div>
+
+                        <div className="md:w-1/2 rounded-lg overflow-hidden h-[400px] md:h-auto">
+                            <div className='md:hidden'>
                                 <Link
                                     href={`/heroes`}
-                                    className="flex gap-3 items-center justify-center py-2 cursor-pointer px-3 rounded-full bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400"
+                                    className="flex gap-3 items-center justify-center py-2 cursor-pointer px-3 rounded-full bg-gray-300 hover:text-gray-600 hover:bg-gray-300"
                                 >
                                     <FaArrowLeft />
                                     <span>Voltar</span>
@@ -116,44 +104,18 @@ const HeroDetailContent = () => {
                             <img
                                 src={`${hero.thumbnail.path}.${hero.thumbnail.extension}`}
                                 alt={hero.name}
-                                className="w-full h-full object-cover mt-5 rounded-lg"
+                                className="w-full h-full object-cover mt-5 md:mt-0 rounded-lg"
                             />
                         </div>
-
-                        <div className="p-6 md:w-2/3 bg-cyan-900 rounded-lg shadow-lg">
-                            <div className="flex justify-between items-start mb-6">
-                                <h1 className="text-3xl font-bold">{hero.name}</h1>
-                                <button
-                                    onClick={handleFavorite}
-                                    className={`px-4 py-2 cursor-pointer rounded-full ${isFavorite(hero.id) ? 'bg-cyan-600 text-white border-2 border-transparent' : 'bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400'}`}
-                                >
-                                    {isFavorite(hero.id) ? getFavoriteLabel(true) : getFavoriteLabel(false)}
-                                </button>
-                            </div>
-
-                            <div className="mb-8 p-4 bg-cyan-950 rounded-lg">
-                                <h2 className="text-xl font-semibold mb-2 text-cyan-200">Description</h2>
-                                {hero.description ? (
-                                    <p className="text-cyan-500">{hero.description}</p>
-                                ) : (
-                                    <p className="text-cyan-500">Não há descrições disponíveis para este herói</p>
-                                )}
-                            </div>
-
-                            <div className="space-y-4">
-                                <Accordion title="Quadrinhos" items={hero.comics.items} />
-                                <Accordion title="Séries" items={hero.series.items} />
-                                <Accordion title="Histórias" items={hero.stories.items} />
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </main>
-        </div>
+                </div>)}
+            </div>
+
+        </>
     )
 }
 
 export default function HeroDetailPage() {
 
-    <Suspense fallback={<Loading />}><HeroDetailContent /></Suspense>
+    return (<Suspense fallback={<Loading />}><HeroDetailContent /></Suspense>)
 }

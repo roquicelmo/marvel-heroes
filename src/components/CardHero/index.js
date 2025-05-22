@@ -15,19 +15,19 @@ export default function CardHero({ hero }) {
     toggleFavorite(hero.id);
   };
 
-    const getFavoriteLabel = (favorite) => {
-    if(favorite){
-        return <div className="flex items-center justify-center gap-1.5"><FaHeart/><span>Favorito</span></div>
+  const getFavoriteLabel = (favorite) => {
+    if (favorite) {
+      return <div className="flex items-center justify-center gap-1.5"><FaHeart /><span>Favorito</span></div>
     }
-    else{
-        return <div className="flex items-center justify-center gap-1.5"><FaRegHeart/><span>Favoritar</span></div>
+    else {
+      return <div className="flex items-center justify-center gap-1.5"><FaRegHeart /><span>Favoritar</span></div>
     }
   }
 
 
   return (
     <Link href={`/heroes/${hero.id}`} className="block h-full">
-      <div className="bg-cyan-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer h-full flex flex-col">
         <div className="h-48 overflow-hidden">
           <img
             src={`${hero.thumbnail.path}.${hero.thumbnail.extension}`}
@@ -40,7 +40,7 @@ export default function CardHero({ hero }) {
           <div className="mt-auto">
             <button
               onClick={handleFavorite}
-              className={`cursor-pointer px-3 py-1 rounded-full w-full ${isFavorite(hero.id) ? 'bg-cyan-600 text-white border-2 border-transparent' : 'bg-transparent border-2 border-cyan-700 text-cyan-500 hover:text-cyan-400 hover:border-cyan-400'}`}
+              className={`cursor-pointer px-3 py-1 rounded-full w-full transition-colors ${isFavorite(hero.id) ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-gray-200 text-gray-500 hover:text-gray-600 hover:bg-gray-300'}`}
             >
               {isFavorite(hero.id) ? getFavoriteLabel(true) : getFavoriteLabel(false)}
             </button>
