@@ -72,7 +72,7 @@ export default function Header() {
                 </div>
 
                 <div className='h-full'>
-                    <Link href="heroes/favorites" className="bg-gray-200 text-gray-500 px-6 py-3 rounded-full font-semibold flex gap-1.5 items-center hover:bg-red-500 hover:text-white transition-colors">
+                    <Link href="/favorites" className="bg-gray-200 text-gray-500 px-6 py-3 rounded-full font-semibold flex gap-1.5 items-center hover:bg-red-500 hover:text-white transition-colors">
                         <FaHeart />
                         <span>Favoritos</span>
                     </Link>
@@ -94,7 +94,7 @@ export default function Header() {
                             <FiSearch size={20} />
                         </button>
 
-                        <Link href="/heroes/favorites" className="p-3 rounded-full cursor-pointer text-gray-600 bg-gray-200">
+                        <Link href="/favorites" className="p-3 rounded-full cursor-pointer text-gray-600 bg-gray-200">
                             <FaHeart size={20} />
                         </Link>
                     </div>
