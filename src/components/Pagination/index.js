@@ -20,7 +20,6 @@ export default function Pagination({ currentPage, totalPages, filters }) {
 
         return pages;
     };
-    console.log('filters', filters.orderBy)
     return (
         <div className="flex justify-center gap-2 my-3 w-full">
             <button

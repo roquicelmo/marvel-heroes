@@ -6,7 +6,7 @@ const MARVEL_PRIVATE_KEY = process.env.NEXT_PUBLIC_MARVEL_PRIVATE_KEY;
 
 const marvelApi = axios.create({
   baseURL: 'https://gateway.marvel.com/v1/public',
-  timeout: 10000,
+  timeout: 20000,
 });
 
 marvelApi.interceptors.request.use(config => {
