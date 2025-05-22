@@ -1,7 +1,6 @@
 # Marvel Heroes
 
 <br />
-<br />
 
 ## ✨ Funcionalidades
 
