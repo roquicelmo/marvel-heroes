@@ -1,11 +1,7 @@
 # Marvel Heroes
 
-<div>
-  <img src="https://img.shields.io/badge/Next.js-13+-black?logo=next.js" height="32" alt="Next.js Version">
-  <img src="https://img.shields.io/badge/React-18-blue?logo=react" height="32" alt="React Version">
-  <img src="https://img.shields.io/badge/License-MIT-green" height="32" alt="License">
-</div>
-
+<br />
+<br />
 
 ## ✨ Funcionalidades
 
