@@ -10,7 +10,7 @@ export default function Filters({ orderBy }) {
     };
 
     return (
-        <div className="mb-6">
+        <div className="mb-6 text">
             <label className="mr-2">Ordenação:</label>
             <select
                 value={orderBy}

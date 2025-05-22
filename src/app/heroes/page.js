@@ -1,16 +1,14 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { getHeroes } from '@/services/marvelService';
-import Header from '@/components/Header';
 import CardHero from '@/components/CardHero';
 import Pagination from '@/components/Pagination';
 import Filters from '@/components/Filters';
 import Loading from '@/components/Loading'
 
 const HeroesContent = () => {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [heroes, setHeroes] = useState([]);
   const [total, setTotal] = useState(0);
@@ -43,39 +41,32 @@ const HeroesContent = () => {
     fetchHeroes();
   }, [page, orderBy, nameStartsWith, offset]);
 
-  const handleSearch = (searchTerm) => {
-    router.push(`/heroes?nameStartsWith=${searchTerm}&page=1&orderBy=${orderBy}`);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <Header onSearch={handleSearch} />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
-          <p>Loading heroes...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen">
-      <Header onSearch={handleSearch} />
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="max-w-7xl mx-auto">
-          <Filters orderBy={orderBy} />
+    <div className={`flex flex-col min-h-[calc(100vh-140px)] ${loading ? 'items-center justify-center' : ''}`}>
+      {loading ? <Loading /> :
+        <>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-7xl mx-auto">
+              <Filters orderBy={orderBy} />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {heroes.map(hero => (
-              <CardHero key={hero.id} hero={hero} />
-            ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                {heroes.map(hero => (
+                  <CardHero key={hero.id} hero={hero} />
+                ))}
+              </div>
+            </div>
           </div>
-
-          <Pagination currentPage={page} totalPages={totalPages} />
-        </div>
-      </main>
+          <div className="sticky bottom-0 bg-white py-2 mt-auto shadow-(--pagination-shadow)">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto">
+                <Pagination currentPage={page} totalPages={totalPages} />
+              </div>
+            </div>
+          </div>
+        </>}
     </div>
+
   );
 }
 

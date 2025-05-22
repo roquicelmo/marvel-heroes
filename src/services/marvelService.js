@@ -12,21 +12,21 @@ const marvelApi = axios.create({
 marvelApi.interceptors.request.use(config => {
   const ts = new Date().getTime();
   const hash = md5(ts + MARVEL_PRIVATE_KEY + MARVEL_PUBLIC_KEY);
-  
+
   config.params = {
     ...config.params,
     ts,
     apikey: MARVEL_PUBLIC_KEY,
     hash
   };
-  
+
   return config;
 });
 
 export const getHeroes = async ({ offset = 0, limit = 20, orderBy = 'name', nameStartsWith = '' }) => {
   const params = { offset, limit, orderBy };
   if (nameStartsWith) params.nameStartsWith = nameStartsWith;
-  
+
   const response = await marvelApi.get('/characters', { params });
   return response.data.data;
 };
