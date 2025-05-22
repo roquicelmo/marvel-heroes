@@ -1,5 +1,5 @@
 # Marvel Heroes
-
+Projeto implementado para abordar conceitos utilizados no dia a dia, como Requisições em APIs externas, uso de Hooks, customHooks, Componentização, Paginação, entre outros. 
 <br />
 
 ## ✨ Funcionalidades
