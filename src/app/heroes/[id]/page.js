@@ -51,7 +51,6 @@ export default function HeroDetailPage() {
             return <div className="flex items-center justify-center gap-1.5"><FaRegHeart /><span className='hidden lg:block'>Favoritar</span></div>
         }
     }
-    console.log('hero', hero)
 
     return (
         <div className={`container mx-auto p-6 h-full ${loading || error ? 'flex items-center justify-center' : ''}`}>
