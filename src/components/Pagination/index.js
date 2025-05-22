@@ -5,8 +5,9 @@ import { IoIosArrowDroprightCircle } from "react-icons/io";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 
 
-export default function Pagination({ currentPage, totalPages }) {
+export default function Pagination({ currentPage, totalPages, filters }) {
     const router = useRouter();
+
 
     const getPageNumbers = () => {
         const pages = [];
@@ -19,11 +20,11 @@ export default function Pagination({ currentPage, totalPages }) {
 
         return pages;
     };
-
+    console.log('filters', filters.orderBy)
     return (
         <div className="flex justify-center gap-2 my-3 w-full">
             <button
-                onClick={() => router.push(`/heroes?page=${currentPage - 1}`)}
+                onClick={() => router.push(`/heroes?${filters.orderBy ? 'orderBy=' + filters.orderBy + '&' : ''}page=${currentPage - 1}`)}
                 className="px-4 py-2 rounded cursor-pointer hover:text-red-500 disabled:cursor-not-allowed disabled:text-gray-300"
                 disabled={currentPage > 1 ? false : true}
             >
@@ -34,7 +35,7 @@ export default function Pagination({ currentPage, totalPages }) {
             {getPageNumbers().map(page => (
                 <button
                     key={page}
-                    onClick={() => router.push(`/heroes?page=${page}`)}
+                    onClick={() => router.push(`/heroes?${filters.orderBy ? 'orderBy=' + filters.orderBy + '&' : ''}page=${page}`)}
                     className={`px-4 py-2 rounded cursor-pointer font-bold hover:bg-red-500 hover:text-white ${currentPage === page ? 'bg-red-500 text-white' : 'bg-transparent'}`}
                 >
                     {page}
@@ -45,7 +46,7 @@ export default function Pagination({ currentPage, totalPages }) {
 
             {currentPage < totalPages && (
                 <button
-                    onClick={() => router.push(`/heroes?page=${totalPages}`)}
+                    onClick={() => router.push(`/heroes?${filters.orderBy ? 'orderBy=' + filters.orderBy + '&' : ''}page=${totalPages}`)}
                     className="px-4 py-2 font-bold cursor-pointer rounded bg-transparent hover:bg-red-500 hover:text-white"
                 >
                     {totalPages}
@@ -54,7 +55,7 @@ export default function Pagination({ currentPage, totalPages }) {
 
 
             <button
-                onClick={() => router.push(`/heroes?page=${currentPage + 1}`)}
+                onClick={() => router.push(`/heroes?${filters.orderBy ? 'orderBy=' + filters.orderBy + '&' : ''}page=${currentPage + 1}`)}
                 className="px-4 py-2 rounded cursor-pointer hover:text-red-500 disabled:cursor-not-allowed disabled:text-gray-300"
                 disabled={currentPage < totalPages ? false : true}
             >

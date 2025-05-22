@@ -7,12 +7,16 @@ import CardHero from '@/components/CardHero';
 import Pagination from '@/components/Pagination';
 import Filters from '@/components/Filters';
 import Loading from '@/components/Loading'
+import { WrapperDataComponent } from '@/components/WrapperDataComponent';
+import { useRouter } from 'next/navigation';
 
 const HeroesContent = () => {
   const searchParams = useSearchParams();
   const [heroes, setHeroes] = useState([]);
   const [total, setTotal] = useState(0);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   const page = parseInt(searchParams.get('page') || '1');
   const orderBy = searchParams.get('orderBy') || 'name';
@@ -31,8 +35,12 @@ const HeroesContent = () => {
         const data = await getHeroes(params);
         setHeroes(data.results);
         setTotal(data.total);
+        setError(false)
+
       } catch (error) {
+        setError(true)
         console.error('Error fetching heroes:', error);
+
       } finally {
         setLoading(false);
       }
@@ -43,8 +51,9 @@ const HeroesContent = () => {
 
   return (
 
-    <div className={`flex flex-col min-h-[calc(100vh-140px)] ${loading ? 'items-center justify-center' : ''}`}>
-      {loading ? <Loading /> :
+    <div className={`flex flex-col min-h-[calc(100vh-140px)] ${loading || error ? 'items-center justify-center' : ''}`}>
+      <WrapperDataComponent isLoading={loading} hasError={error} tryAgain={() => router.refresh()}>
+
         <>
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="max-w-7xl mx-auto">
@@ -60,11 +69,13 @@ const HeroesContent = () => {
           <div className="sticky bottom-0 bg-white py-2 mt-auto shadow-(--pagination-shadow)">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-7xl mx-auto">
-                <Pagination currentPage={page} totalPages={totalPages} />
+                <Pagination currentPage={page} totalPages={totalPages} filters={{ orderBy: orderBy }} />
               </div>
             </div>
           </div>
-        </>}
+        </>
+
+      </WrapperDataComponent>
     </div>
 
   );
