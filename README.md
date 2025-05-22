@@ -46,7 +46,7 @@ cd marvel-heroes/
 npm install
 ```
 
-4 - Crie um arquivo na raiz do projeto chamado `env.local`
+4 - Crie um arquivo na raiz do projeto chamado `.env.local`
 
 5 - Dentro do arquivo crie as seguintes variáveis
 ```bash
