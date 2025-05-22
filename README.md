@@ -74,7 +74,7 @@ npm run dev
 ## 📂 Estrutura do Projeto
 
 ```bash
-marvel-heroes-explorer/
+marvel-heroes/
 ├── app/                        # Roteamento do Next JS
 │   ├── favorites/              # Página de Favoritos   
 │   ├── heroes/                 # Rota principal (listagem)
