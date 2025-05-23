@@ -2,6 +2,9 @@
 Projeto implementado para abordar conceitos utilizados no dia a dia, como Requisições em APIs externas, uso de Hooks, customHooks, Componentização, Paginação, entre outros. 
 <br />
 
+## 💻 Link para App em Produção
+[Clique para acessar o app em produção](https://marvel-heroes-wine.vercel.app/)
+
 ## ✨ Funcionalidades
 
 | Funcionalidade       | Descrição                                                                 |
